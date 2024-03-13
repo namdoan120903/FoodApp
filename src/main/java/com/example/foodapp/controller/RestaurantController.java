@@ -1,10 +1,12 @@
 package com.example.foodapp.controller;
 
 import com.example.foodapp.dto.RestaurantDTO;
+import com.example.foodapp.model.Event;
 import com.example.foodapp.model.Restaurant;
 import com.example.foodapp.model.User;
 import com.example.foodapp.repository.RestaurantRepository;
 import com.example.foodapp.repository.UserRepository;
+import com.example.foodapp.service.EventService;
 import com.example.foodapp.service.RestaurantService;
 import com.example.foodapp.service.RestaurantServiceImp;
 import com.example.foodapp.service.UserService;
@@ -27,6 +29,8 @@ public class RestaurantController {
   private UserService userService;
   @Autowired
   private RestaurantService restaurantService;
+  @Autowired
+  private EventService eventService;
   @GetMapping("/search")
   public ResponseEntity<List<Restaurant>> searchRestaurant(@RequestHeader("Authorization") String jwt,@RequestParam String keyword) throws Exception {
     User user = userService.findUserByJwtToken(jwt);
@@ -51,5 +55,18 @@ public class RestaurantController {
     RestaurantDTO restaurant = restaurantService.addToFavorites(id, user);
     return new ResponseEntity<>(restaurant, HttpStatus.OK);
   }
+  @GetMapping("/event")
+  public ResponseEntity<List<Event>> getAllEvent(@RequestHeader("Authorization") String jwt) throws Exception{
+    User user = userService.findUserByJwtToken(jwt);
+    List<Event> events = eventService.getAllEvent();
+    return  new ResponseEntity<>(events, HttpStatus.OK);
+  }
+  @GetMapping("/event/{restaurantId}")
+  public ResponseEntity<List<Event>> getRestaurantEvent(@RequestHeader("Authorization") String jwt, @PathVariable Long restaurantId) throws Exception{
+    User user = userService.findUserByJwtToken(jwt);
+    List<Event> events = eventService.getEventRestaurant(restaurantId);
+    return  new ResponseEntity<>(events, HttpStatus.OK);
+  }
+
 
 }

@@ -65,11 +65,11 @@ public class IngredientsServiceImp implements IngredientsService{
   }
 
   @Override
-  public IngredientsItem updateStoke(Long id) throws Exception {
+  public IngredientsItem updateStock(Long id) throws Exception {
     Optional<IngredientsItem> optIngredientsItem = ingredientItemRepository.findById(id);
     if (optIngredientsItem.isEmpty()) throw new Exception("ingredient item not found");
     IngredientsItem ingredientsItem = optIngredientsItem.get();
-    ingredientsItem.setStoke(!ingredientsItem.isStoke());
+    ingredientsItem.setStock(!ingredientsItem.isStock());
     return ingredientItemRepository.save(ingredientsItem);
   }
 }

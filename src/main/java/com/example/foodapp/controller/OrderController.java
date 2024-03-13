@@ -3,7 +3,9 @@ package com.example.foodapp.controller;
 import com.example.foodapp.model.Order;
 import com.example.foodapp.model.User;
 import com.example.foodapp.request.OrderRequest;
+import com.example.foodapp.response.PaymentResponse;
 import com.example.foodapp.service.OrderService;
+import com.example.foodapp.service.PaymentService;
 import com.example.foodapp.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,14 @@ public class OrderController {
   private OrderService orderService;
   @Autowired
   private UserService userService;
+  @Autowired
+  private PaymentService paymentService;
   @PostMapping("/order")
-  public ResponseEntity<Order> creatOrder(@RequestBody OrderRequest request, @RequestHeader("Authorization") String jwt) throws Exception{
+  public ResponseEntity<PaymentResponse> creatOrder(@RequestBody OrderRequest request, @RequestHeader("Authorization") String jwt) throws Exception{
     User user = userService.findUserByJwtToken(jwt);
     Order order = orderService.createOrder(request, user);
-    return new ResponseEntity<>(order, HttpStatus.CREATED);
+    PaymentResponse paymentResponse = paymentService.createPaymentLink(order);
+    return new ResponseEntity<>(paymentResponse, HttpStatus.CREATED);
   }
   @GetMapping ("/order/user")
   public ResponseEntity<List<Order>> getUserOrder(@RequestHeader("Authorization") String jwt) throws Exception{

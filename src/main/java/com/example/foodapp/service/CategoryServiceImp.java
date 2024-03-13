@@ -17,8 +17,8 @@ public class CategoryServiceImp implements CategoryServices{
   @Autowired
   private RestaurantService restaurantService;
   @Override
-  public Category createCategory(String name, Long userId) throws Exception {//using userId to get restaurant
-    Restaurant restaurant = restaurantService.getRestaurantByUserID(userId);
+  public Category createCategory(String name, Long restaurantId) throws Exception {//using userId to get restaurant
+    Restaurant restaurant = restaurantService.findRestaurantById(restaurantId);
     Category category = new Category();
     category.setName(name);
     category.setRestaurant(restaurant);
@@ -27,8 +27,8 @@ public class CategoryServiceImp implements CategoryServices{
   }
 
   @Override
-  public List<Category> getRestaurantCategory(Long userId) throws Exception {
-    Restaurant restaurant = restaurantService.getRestaurantByUserID(userId);
+  public List<Category> getRestaurantCategory(Long id) throws Exception {
+    Restaurant restaurant = restaurantService.findRestaurantById(id);
     List<Category> categories = categoryRepository.findByRestaurantId(restaurant.getId());
     return categories;
   }

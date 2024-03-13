@@ -27,18 +27,20 @@ public class CartController {
   private CartService cartService;
   @Autowired
   private UserService userService;
-  @PostMapping("/cart/add")
-  public ResponseEntity<CartItem> addItemToCart(@RequestBody AddCartItemRequest request,
+  @PutMapping ("/cart/add")
+  public ResponseEntity<Cart> addItemToCart(@RequestBody AddCartItemRequest request,
       @RequestHeader("Authorization") String jwt) throws Exception {
-    CartItem cartItem = cartService.addItemToCart(request, jwt);
-    return new ResponseEntity<>(cartItem, HttpStatus.CREATED);
+    User user = userService.findUserByJwtToken(jwt);
+    Cart cart = cartService.addItemToCart(request, user);
+    return new ResponseEntity<>(cart, HttpStatus.CREATED);
   }
   @PutMapping("/cart-item/update")
-  public ResponseEntity<CartItem> updateCartItemQuantity(@RequestBody UpdateCartItemRequest request,
+  public ResponseEntity<Cart> updateCartItemQuantity(@RequestBody UpdateCartItemRequest request,
       @RequestHeader("Authorization") String jwt) throws Exception {
-    CartItem cartItem = cartService.updateCartItemQuantity(request.getCartItemId(),
-        request.getQuantity());
-    return new ResponseEntity<>(cartItem, HttpStatus.OK);
+    User user = userService.findUserByJwtToken(jwt);
+    Cart cart = cartService.updateCartItemQuantity(request.getCartItemId(),
+        request.getQuantity(), user);
+    return new ResponseEntity<>(cart, HttpStatus.OK);
   }
   @DeleteMapping ("/cart-item/{id}/remove")
   public ResponseEntity<Cart> removeCartItem(@PathVariable Long id,

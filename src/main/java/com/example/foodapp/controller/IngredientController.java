@@ -37,9 +37,9 @@ public class IngredientController {
     IngredientsItem ingredientsItem = ingredientsService.createIngredientsItem(request.getRestaurantId(), request.getName(), request.getCategoryId());
     return new ResponseEntity<>(ingredientsItem, HttpStatus.CREATED);
   }
-  @PutMapping("/{id}/stoke")
-  public ResponseEntity<IngredientsItem> updateStoke(@PathVariable Long id) throws Exception {
-    IngredientsItem ingredientsItem = ingredientsService.updateStoke(id);
+  @PutMapping("/{id}/stock")
+  public ResponseEntity<IngredientsItem> updateStock(@PathVariable Long id) throws Exception {
+    IngredientsItem ingredientsItem = ingredientsService.updateStock(id);
     return new ResponseEntity<>(ingredientsItem, HttpStatus.OK);
   }
   @GetMapping ("/restaurant/{id}")

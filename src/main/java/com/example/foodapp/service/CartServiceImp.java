@@ -25,15 +25,14 @@ public class CartServiceImp implements CartService{
   private FoodService foodService;
 
   @Override
-  public CartItem addItemToCart(AddCartItemRequest request, String jwt) throws Exception {
-    User user = userService.findUserByJwtToken(jwt);
+  public Cart addItemToCart(AddCartItemRequest request, User user) throws Exception {
     Food food = foodService.findFoodById(request.getFoodId());
     Cart cart = cartRepository.findByCustomerId(user.getId());
     //if the food exist in the cart
     for(CartItem cartItem : cart.getItem()){
       if(cartItem.getFood().equals(food)){
         int newQuantity = cartItem.getQuantity() + request.getQuantity();
-        return updateCartItemQuantity(cartItem.getId(), newQuantity);
+        return updateCartItemQuantity(cartItem.getId(), newQuantity, user);
       }
     }
     CartItem cartItem = new CartItem();
@@ -45,17 +44,21 @@ public class CartServiceImp implements CartService{
 
     CartItem saveCartItem = cartItemRepository.save(cartItem);
     cart.getItem().add(saveCartItem);
-    return saveCartItem;
+    cart.setTotal(calculateCartTotals(cart));
+    return cart;
   }
   //update cartItem then cascade auto update cart
   @Override
-  public CartItem updateCartItemQuantity(Long cartItemId, int quantity) throws Exception {
+  public Cart updateCartItemQuantity(Long cartItemId, int quantity, User user) throws Exception {
     Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartItemId);
     if(optionalCartItem.isEmpty()) throw new Exception("cart item  not found ");
     CartItem cartItem = optionalCartItem.get();
     cartItem.setQuantity(quantity);
     cartItem.setTotalPrice(cartItem.getFood().getPrice() * quantity);
-    return cartItemRepository.save(cartItem);
+    cartItemRepository.save(cartItem);
+    Cart cart = cartRepository.findByCustomerId(user.getId());
+    cart.setTotal(calculateCartTotals(cart));
+    return cart;
   }
 
   @Override
@@ -66,6 +69,7 @@ public class CartServiceImp implements CartService{
     if(optionalCartItem.isEmpty()) throw new Exception("cart item  not found ");
     CartItem cartItem = optionalCartItem.get();
     cart.getItem().remove(cartItem);//because of remove cartItem so cartItem is deleted in the database
+    cart.setTotal(calculateCartTotals(cart));
     return cartRepository.save(cart);
   }
 

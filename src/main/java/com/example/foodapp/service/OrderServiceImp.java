@@ -15,6 +15,7 @@ import com.example.foodapp.request.OrderRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.antlr.v4.runtime.atn.SemanticContext.OR;
@@ -97,7 +98,7 @@ public class OrderServiceImp implements OrderService{
   @Override
   public List<Order> getRestaurantOrder(Long restaurantId, String orderStatus) throws Exception {
     List<Order> orders = orderRepository.findByRestaurantId(restaurantId);
-    if(orderStatus != null){
+    if(!Objects.equals(orderStatus, "ALL")){
       orders = orders.stream().filter(order -> order.getOrderStatus().equals(orderStatus)).collect(
           Collectors.toList());
     }

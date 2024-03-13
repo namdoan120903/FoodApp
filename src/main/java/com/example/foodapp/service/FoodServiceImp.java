@@ -28,6 +28,7 @@ public class FoodServiceImp implements FoodService{
     food.setSeasonal(request.isSeasonal());
     food.setVegetarian(request.isVegetarian());
     food.setIngredients(request.getIngredientsItems());
+    food.setAvailable(true);
     Food savedFood = foodRepository.save(food);
     restaurant.getFoods().add(savedFood);
     return savedFood;
@@ -37,11 +38,13 @@ public class FoodServiceImp implements FoodService{
   public void deleteFood(Long foodId) throws Exception {
     Food food = findFoodById(foodId);
     food.setRestaurant(null);
+    food.setIngredients(null);
     foodRepository.save(food);
+    foodRepository.delete(food);
   }
 
   @Override
-  public List<Food> getRestaurantFood(Long restaurantId, boolean isVegetarian, boolean isNonVeg,
+  public List<Food> getRestaurantFood(Long restaurantId, boolean isVegetarian, boolean nonVegetarian,
       boolean isSeasonal, String foodCategory) {
 
     List<Food> foods = foodRepository.findByRestaurantId(restaurantId);
@@ -49,11 +52,11 @@ public class FoodServiceImp implements FoodService{
     if(isVegetarian){
       foods = foods.stream().filter(food -> food.isVegetarian() == isVegetarian).collect(Collectors.toList());
     }
-    if(isNonVeg){
-      foods = foods.stream().filter(food -> !food.isVegetarian()).collect(Collectors.toList());
+    if(nonVegetarian){
+      foods = foods.stream().filter(food -> food.isNonVegetarian()== nonVegetarian).collect(Collectors.toList());
     }
     if(isSeasonal){
-      foods = foods.stream().filter(food -> food.isSeasonal() == isSeasonal).collect(Collectors.toList());
+      foods =  foods.stream().filter(food -> food.isSeasonal() == isSeasonal).collect(Collectors.toList());
     }
     //get food has foodCategory
     if(foodCategory != null && !foodCategory.isEmpty()){

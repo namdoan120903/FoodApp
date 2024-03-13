@@ -1,9 +1,12 @@
 package com.example.foodapp.controller;
 
+import com.example.foodapp.model.Event;
 import com.example.foodapp.model.Restaurant;
 import com.example.foodapp.model.User;
+import com.example.foodapp.request.CreateEventRequest;
 import com.example.foodapp.request.CreateRestaurantRequest;
 import com.example.foodapp.response.MessageResponse;
+import com.example.foodapp.service.EventService;
 import com.example.foodapp.service.RestaurantService;
 import com.example.foodapp.service.RestaurantServiceImp;
 import com.example.foodapp.service.UserService;
@@ -29,6 +32,8 @@ public class AdminRestaurantController {
   private RestaurantService restaurantService;
   @Autowired
   private UserService userService;
+  @Autowired
+  private EventService eventService;
   @PostMapping
   public ResponseEntity<Restaurant> createRestaurant(@RequestBody CreateRestaurantRequest request,
       @RequestHeader("Authorization") String jwt) throws Exception{
@@ -64,10 +69,28 @@ public class AdminRestaurantController {
   }
   @GetMapping("/user")
   public ResponseEntity<Restaurant> findRestaurantByUserId(@RequestHeader("Authorization") String jwt) throws Exception{
-
     User user = userService.findUserByJwtToken(jwt);
     Restaurant restaurant = restaurantService.getRestaurantByUserID(user.getId());
     return new ResponseEntity<>(restaurant, HttpStatus.OK);
   }
+  @PostMapping("/{id}/event")
+  public ResponseEntity<Event> createEvent(@RequestBody CreateEventRequest request,
+      @RequestHeader("Authorization") String jwt, @PathVariable Long id) throws Exception{
+
+    User user = userService.findUserByJwtToken(jwt);//always authenticate user bt jwt
+    Event event = eventService.createEvent(request, id);
+    return new ResponseEntity<>(event, HttpStatus.CREATED);
+  }
+  @DeleteMapping("/event/{id}")
+  public ResponseEntity<MessageResponse> deleteEvent(
+      @RequestHeader("Authorization") String jwt,
+      @PathVariable Long id) throws Exception{
+    User user = userService.findUserByJwtToken(jwt);
+    eventService.deleteEvent(id);
+    MessageResponse messageResponse = new MessageResponse();
+    messageResponse.setMessage("event deleted successfully");
+    return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+  }
+
 
 }

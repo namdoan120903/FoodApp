@@ -45,6 +45,7 @@ public class Food {
   private boolean isVegetarian;
 
   private boolean isSeasonal;
+  private boolean nonVegetarian;
 
   @ManyToMany
   private List<IngredientsItem> ingredients = new ArrayList<>();

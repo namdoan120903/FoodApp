@@ -71,13 +71,10 @@ public class RestaurantServiceImp implements RestaurantService{
     return restaurantRepository.findBySearchQuery(keyword);
   }
 
-
+  //get restaurant by owner
   @Override
-  public Restaurant getRestaurantByUserID(Long id) throws Exception {
+  public Restaurant getRestaurantByUserID(Long id){
     Restaurant restaurant = restaurantRepository.findByOwnerId(id);
-    if (restaurant == null){
-      throw new Exception("restaurant not found with owner id" + id);
-    }
     return restaurant;
   }
 
@@ -94,7 +91,7 @@ public class RestaurantServiceImp implements RestaurantService{
 
     if (favorites.isEmpty() || !favorites.removeIf(dto -> dto.getId().equals(restaurantDTO.getId()))) {
       favorites.add(restaurantDTO);
-    }
+    } 
 
     userRepository.save(user);
     return restaurantDTO;

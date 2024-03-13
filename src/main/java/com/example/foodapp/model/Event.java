@@ -1,34 +1,33 @@
 package com.example.foodapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
-@Data
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngredientCategory {
+public class Event {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   private String name;
-
+  private String location;
+  private String description;
+  private LocalDateTime startedAt;
+  private LocalDateTime EndAt;
+  private String image;
+  @JsonIgnore
   @ManyToOne
-  @JsonIgnore
   private Restaurant restaurant;
-  @JsonIgnore
-  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-  private List<IngredientsItem> ingredients = new ArrayList<>();
 }

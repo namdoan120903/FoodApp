@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,7 +44,7 @@ public class Restaurant {
   private ContactInformation contactInformation;
 
   private String openingHours;
-
+  @JsonIgnore
   @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
 
@@ -52,10 +53,13 @@ public class Restaurant {
   private List<String> images;
 
   private LocalDateTime registrationDate;
-
   private boolean open;
 
   @JsonIgnore
   @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
   private List<Food> foods = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Event> events = new ArrayList<>();
 }

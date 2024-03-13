@@ -35,13 +35,21 @@ public class AdminOrderController {
     List<Order> orders = orderService.getRestaurantOrder(id, orderStatus);
     return new ResponseEntity<>(orders, HttpStatus.OK);
   }
-  @PutMapping("/order/{id}/{orderStatus}")
+  @PutMapping("/order/{id}")
   public ResponseEntity<Order> updateOrder(@PathVariable Long id,
-      @PathVariable String orderStatus,
+      @RequestParam String orderStatus,
       @RequestHeader("Authorization") String jwt) throws Exception{
 
     User user = userService.findUserByJwtToken(jwt);
     Order order = orderService.updateOrder(id, orderStatus);
+    return new ResponseEntity<>(order, HttpStatus.OK);
+  }
+  @GetMapping("/order/{id}")
+  public ResponseEntity<Order> findOrderById(@PathVariable Long id,
+      @RequestHeader("Authorization") String jwt) throws Exception{
+
+    User user = userService.findUserByJwtToken(jwt);
+    Order order = orderService.findOrderById(id);
     return new ResponseEntity<>(order, HttpStatus.OK);
   }
 

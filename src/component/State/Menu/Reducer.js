@@ -39,7 +39,7 @@ export const menuItemReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        menuItems: state.menuItems.filter((item) =>
+        menuItems: state.menuItems.map((item) =>
           item.id === action.payload.id ? action.payload : item
         ),
         message: "Food Availability updated Successfully",

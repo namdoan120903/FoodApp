@@ -1,9 +1,10 @@
 import { Create, Delete } from "@mui/icons-material";
-import { Box, Button, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect } from "react";
 import CreateIngredients from "./CreateIngredients";
+import CreateIngredientsCategory from "./CreateIngredientsCategory";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredientRestaurant, updateStockIngredient } from "../../component/State/Ingredient/Action";
+import { getIngredientCategory } from "../../component/State/Ingredient/Action";
 const style = {
   position: 'absolute',
   top: '50%',
@@ -15,29 +16,31 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const IngredientTable = () => {
+const IngredientCategory = () => {
+  const restaurant = useSelector(store => store.restaurant)
   const ingredient = useSelector(store => store.ingredient)
-  const jwt = localStorage.getItem("jwt")
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch()
-
-  const handleUpdateStock = (id)=>{
-    dispatch(updateStockIngredient({id, jwt}))
-  }
-  const handleDeleteIngredient = (id)=>{
+  useEffect(()=>{
+    dispatch(getIngredientCategory({
+      id: restaurant.userRestaurant.id,
+      jwt: localStorage.getItem("jwt")
+    }))
+  },[])
+  const handleDeleteCategory = (id)=>{
 
   }
   return (
     <div className="p-5">
-       <Box>
+        <Box>
       <Card className="my-2">
         <CardHeader action={
-            <IconButton onClick={handleOpen} aria-label="settings">
-                <Create/>
+            <IconButton onClick={handleOpen}aria-label="settings">
+                <Create />
             </IconButton>
-        } title={"Ingredients"} sx={{ pt: 2, alignItems: "center" }} />
+        } title={"Ingredients Category"} sx={{ pt: 2, alignItems: "center" }} />
       </Card>
       <Modal
           open={open}
@@ -46,38 +49,32 @@ const IngredientTable = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <CreateIngredients/>
+            <CreateIngredientsCategory/>
           </Box>
         </Modal>
       {/* table MUI */}
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 300 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell >Id</TableCell>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Category</TableCell>
-              <TableCell align="center">Availability</TableCell>
+              <TableCell >Image</TableCell>
+              <TableCell align="center">Title</TableCell>
               <TableCell align="center">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ingredient.ingredients?.map((item) => (
+            {ingredient.category?.map((row) => (
               <TableRow
-                key={item.id}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                   {item.id}
+                <TableCell >
+                   {row.id}
                 </TableCell>
-                <TableCell align="center">{item.name}</TableCell>
-                <TableCell align="center">{item.category.name}</TableCell>
+                <TableCell align="center">{row.name}</TableCell>
                 <TableCell sx={{padding:0}} align="center">
-                  <Button onClick={()=>handleUpdateStock(item.id)}>{item.stock?"Yes":"No"}</Button>
-                </TableCell>
-                <TableCell sx={{padding:0}} align="center">
-                  <IconButton onClick={()=>handleDeleteIngredient(item.id)}>
-                    <Delete />
+                  <IconButton  onClick={()=>handleDeleteCategory(row.id)}>
+                    <Delete sx={{margin:0}}/>
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -87,8 +84,8 @@ const IngredientTable = () => {
       </TableContainer>
     </Box>
     </div>
-   
+    
   );
 };
 
-export default IngredientTable;
+export default IngredientCategory;

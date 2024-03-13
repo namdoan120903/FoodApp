@@ -24,28 +24,25 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         cart: action.payload,
-        cartItems: action.payload.item
       };
 
     case ActionType.ADD_ITEM_CART_SUCCESS:
       return {
         ...state,
         loading: false,
-        cartItems: [action.payload, ...state.cartItems],
+        cart: action.payload
       };
     case ActionType.UPDATE_CART_ITEM_SUCCESS:
       return {
         ...state,
         loading: false,
-        cartItems: state.cartItems.map((item) =>
-          item.id === action.payload.id ? action.payload : item
-        ),
+        cart: action.payload
       };
     case ActionType.REMOVE_CART_ITEM_SUCCESS:
       return {
         ...state,
         loading: false,
-        cartItems: state.cartItems.filter((item) => item.id !== action.payload),
+        cart: action.payload
       };
     case ActionType.GET_ALL_CART_ITEMS_FAILURE:
     case ActionType.FIND_CART_FAILURE:

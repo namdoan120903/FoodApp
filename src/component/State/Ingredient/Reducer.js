@@ -30,7 +30,7 @@ export const ingredientReducer = (state = initialState, action) => {
         return{
             ...state,
             update: action.payload,
-            ingredients: state.ingredients.filter((item)=> item.id === action.payload.id ? action.payload : item)
+            ingredients: state.ingredients.map((item)=> item.id === action.payload.id ? action.payload : item)
         }
     default:
       return state;

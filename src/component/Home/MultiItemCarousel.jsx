@@ -20,7 +20,7 @@ const MultiItemCarousel = () => {
     <div>
         <Slider {...settings}>
             {topMeels.map((item) =>(
-                <CarouselItem image={item.image} title={item.title}/>
+                <CarouselItem key={item} image={item.image} title={item.title}/>
             ))}
         </Slider>
     </div>

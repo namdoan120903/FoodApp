@@ -6,9 +6,7 @@ export const  registerUser = (reqData)=>async(dispatch)=>{
     dispatch({type: REGISTER_REQUEST})
     try {
         const {data} = await axios.post(`${API_URL}/auth/signup`, reqData.userData)
-        if(data.role === "ROLE_RESTAURANT_OWNER"){
-            reqData.navigate("/admin/restaurant")
-        }else{
+        if(data.role !== ""){
             reqData.navigate("/account/login")
         }
         dispatch({type:REGISTER_SUCCESS, payload: data.jwt})

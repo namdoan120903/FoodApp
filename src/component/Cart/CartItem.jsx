@@ -29,7 +29,7 @@ const CartItem = ({ item }) => {
             alt=""
           />
         </div>
-        <div className="flex items-center justify-between lg:w-[70%]">
+        <div className="flex items-center justify-between space-x-3 lg:w-[70%]">
           <div className="space-y-1 lg:space-y-3 w-full">
             <p>{item.food.name}</p>
             <div className="flex justify-between items-center">
@@ -55,6 +55,9 @@ const CartItem = ({ item }) => {
           <Chip label={ingredient} />
         ))}
       </div>
+      <div className="pt-2">
+            {item.restaurant?"":"Out of Food: Please remove this food from your cart"}
+          </div>
     </div>
   );
 };

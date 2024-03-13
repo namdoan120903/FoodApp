@@ -8,6 +8,7 @@ import * as Yup from "yup"
 import { useDispatch, useSelector } from 'react-redux';
 import { store } from '../State/Store';
 import { createOrder } from '../State/Order/Action';
+import { clearCart } from '../State/Cart/Action';
 export const style = {
     position: 'absolute',
     top: '50%',
@@ -26,8 +27,6 @@ const initialValues = {
     city: ""
 }
 
-const items = [1, 1, 1, 1]
-
 const Cart = () => {
     const {cart} = useSelector((store) => store)
     const createOrderUsingAddress = () => {}
@@ -36,7 +35,6 @@ const Cart = () => {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const dispatch = useDispatch()
-    console.log("gvyuhjnbh", cart)
 
     const handleSubmit = (value) => {
         const data = {
@@ -52,13 +50,14 @@ const Cart = () => {
             }
         }
         dispatch(createOrder(data))
+        dispatch(clearCart())
     }
     return (
         <>
             <main className='lg:flex justify-between'>
                 <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
                     {
-                        cart.cartItems?.map((item) => <CartItem item={item} />)
+                        cart.cart?.item?.map((item) => <CartItem item={item} />)
                     }
                     <Divider />
                     <div className='billDetails px-5 text-sm'>
@@ -91,7 +90,7 @@ const Cart = () => {
                     </div>
                     <div className='flex flex-wrap gap-5 justify-center'>
                         {
-                            [1, 1, 1, 1, 1].map((item) => <AddressCard handleSelectAddress={createOrderUsingAddress} item={item} showButton={true} />)
+                            [1, 1].map((item) => <AddressCard handleSelectAddress={createOrderUsingAddress} item={item} showButton={true} />)
                         }
                         <Card className='flex gap-5 w-64 p-5'>
                             <AddLocationAltIcon />

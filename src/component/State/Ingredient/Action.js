@@ -9,7 +9,7 @@ export const getIngredientRestaurant = ({id, jwt})=>async(dispatch)=>{
             }
         } )
         dispatch({type:GET_INGREDIENTS, payload: data})
-        console.log("all restaurant", data)
+        console.log("ingredient", data)
     } catch (error) {
         console.log("error", error)
     }
@@ -53,7 +53,7 @@ export const getIngredientCategory = ({id, jwt})=>async(dispatch)=>{
             }
         } )
         dispatch({type:GET_INGREDIENT_CATEGORY_SUCCESS, payload: data})
-        console.log("all restaurant", data)
+        console.log("ingredient category", data)
     } catch (error) {
         dispatch({type: GET_INGREDIENT_CATEGORY_FAILURE, payload:error})
         console.log("error", error)
@@ -61,13 +61,13 @@ export const getIngredientCategory = ({id, jwt})=>async(dispatch)=>{
 }
 export const updateStockIngredient = ({id, jwt})=>async(dispatch)=>{
     try {
-        const {data} = await api.put(`api/admin/ingredient/${id}/stock`,{
+        const {data} = await api.put(`api/admin/ingredient/${id}/stock`,{},{
             headers:{
                 Authorization : `Bearer ${jwt}`
             }
         } )
         dispatch({type:UPDATE_STOCK, payload: data})
-        console.log("all restaurant", data)
+        console.log("update stock", data)
     } catch (error) {
         console.log("error", error)
     }

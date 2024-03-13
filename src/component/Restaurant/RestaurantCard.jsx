@@ -12,12 +12,12 @@ const RestaurantCard = ({item}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const {auth} = useSelector(store => store)
+    const {auth} = useSelector((store) => store)
     const handleAddToFavorites=()=>{
         dispatch(addToFavorites({jwt, restaurantId: item.id}))
     }
     const handleNavigateToRestaurant =()=>{
-        if(!item.open) navigate(`/restaurant/${item.address.city}/${item.name}/${item.id}`)
+        if(item.open) navigate(`/restaurant/${item.address.city}/${item.name}/${item.id}`)
     }
   return (
     <Card  className=' w-[18rem]'>

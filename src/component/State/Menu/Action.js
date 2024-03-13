@@ -10,7 +10,7 @@ export const  createMenuItem = ({menu, jwt})=>async(dispatch)=>{
             }
         } )
         dispatch({type:CREATE_MENU_ITEMS_SUCCESS, payload: data})
-        console.log("all restaurant", data)
+        console.log("create menu item", data)
     } catch (error) {
         dispatch({type:CREATE_MENU_ITEMS_FAILURE, payload:error})
         console.log("error", error)
@@ -70,7 +70,7 @@ export const deleteFood = ({foodId, jwt})=>async(dispatch)=>{
             }
         } )
         dispatch({type:DELETE_MENU_ITEMS_SUCCESS, payload: foodId})
-        console.log("all restaurant", data)
+        console.log("delete food", data)
     } catch (error) {
         dispatch({type:DELETE_MENU_ITEMS_FAILURE, payload:error})
         console.log("error", error)

@@ -16,13 +16,14 @@ import { useEffect } from "react";
 import { getUser } from "./component/State/Authentication/Action";
 import { findCart } from "./component/State/Cart/Action";
 import Router from "./Routers/Router";
+import { getRestaurantByUserId } from "./component/State/Restaurant/Action";
 
 function App() {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { auth, cart } = useSelector((store) => store);
+  const auth = useSelector((store) => store.auth);
   useEffect(() => {
-    if(auth.jwt || jwt){
+    if (auth.jwt || jwt) {
       dispatch(getUser(auth.jwt || jwt));
       dispatch(findCart(jwt));
     }
@@ -30,8 +31,8 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Router/>
-      <Auth/>
+      <Router />
+      <Auth />
     </ThemeProvider>
   );
 }

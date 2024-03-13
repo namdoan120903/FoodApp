@@ -91,7 +91,7 @@ export const restaurantReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        category: [...state, action.payload],
+        category: [...state.category, action.payload],
       };
     case ActionType.GET_RESTAURANT_CATEGORY_SUCCESS:
       return {

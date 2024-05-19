@@ -27,7 +27,7 @@ function App() {
       dispatch(getUser(auth.jwt || jwt));
       dispatch(findCart(jwt));
     }
-  }, [auth.jwt]);
+  }, [jwt]);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

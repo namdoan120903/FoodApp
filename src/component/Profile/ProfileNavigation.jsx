@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
@@ -23,7 +23,7 @@ const menu = [
     {title: "Logout", icon : <LogoutIcon/>},   
 ]
 
-const ProfileNavigation = ({open, handleClose}) => {
+const ProfileNavigation = () => {
   const isSmallScreen  = useMediaQuery('(max-width:900px)')
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,13 +34,16 @@ const ProfileNavigation = ({open, handleClose}) => {
     }else
     navigate(`/my-profile/${item.title.toLowerCase()}`)
   }
+  const open = useState(false)
+  const handleClose = ()=>{
+
+  }
   return (
     <div>
-        <Drawer variant={"permanent"} open = {isSmallScreen?open:true} onClose={handleClose} anchor='left' sx={{zIndex:-1, position: "sticky"}}>
-          <div className='w-[50vw] lg:w-[20vw] h-[100vh] flex flex-col justify-center py-16 text-xl gap-8'>
+          <div className='w-[50vw] lg:w-[20vw] h-[80vh] flex flex-col justify-center text-xl gap-8'>
             {menu.map((item,i)=>
               <>
-                <div onClick={()=>handleNavigate(item)} className='px-5 flex items-center space-x-5 cursor-pointer'>
+                <div key={i} onClick={()=>handleNavigate(item)} className='px-5 flex items-center space-x-5 cursor-pointer'>
                   {item.icon}
                   <span>{item.title}</span>
                 </div>
@@ -48,7 +51,6 @@ const ProfileNavigation = ({open, handleClose}) => {
               </> 
             )}
           </div>
-        </Drawer>
     </div>
   )
 }

@@ -1,22 +1,26 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material'
+import dayjs from 'dayjs'
 import React from 'react'
 
-const EventCard = () => {
+const EventCard = ({item}) => {
     return (
         <div>
             <Card sx={{width:310}}>
-                <CardMedia sx={{ height: 330 }} image='https://cdn.pixabay.com/photo/2015/07/14/17/18/briyani-845111_1280.jpg' />
+                <CardMedia sx={{ height: 300 }} image={item.image} />
                 <CardContent>
                     <Typography variant='h5'>
-                        India Food
+                        {item.name}
                     </Typography>
                     <Typography variant='body2'>
-                        sale of 50%
+                        {item.description}
+                    </Typography>
+                    <Typography variant='body2'>
+                        {item.location}
                     </Typography>
                     <div className='py-2 space-y-2'>
                         <p>{"mumbai"}</p>
-                        <p className='text-sm text-blue-500'>Open</p>
-                        <p className='text-sm text-red-500'>Closed</p>
+                        <p className='text-sm text-blue-500'>{dayjs(item.createdAt).format('DD/MM/YYYY HH:mm')}</p>
+                        <p className='text-sm text-red-500'>{dayjs(item.endAt).format('DD/MM/YYYY HH:mm')}</p>
                     </div>
                 </CardContent>
             </Card>

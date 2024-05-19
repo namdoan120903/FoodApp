@@ -125,7 +125,7 @@ export const createEvents = ({restaurantId, jwt, eventData})=>async(dispatch)=>{
 export const getAllEvents = ({jwt})=>async(dispatch)=>{
     dispatch({type: GET_ALL_EVENT_REQUEST})
     try {
-        const {data} = await api.get(`api/admin/events`,{
+        const {data} = await api.get(`api/restaurants/event`,{
             headers:{
                 Authorization : `Bearer ${jwt}`
             }

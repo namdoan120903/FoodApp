@@ -8,13 +8,12 @@ import Address from './Address';
 import Events from './Events';
 
 const Profile = () => {
-  const [openSideBar, setOpenSidebar] = useState("false");
   return (
-    <div className='lg:flex justify-between '>
-      <div className='sticky h-[80vh] lg:w-[20%]'>
-        <ProfileNavigation open={openSideBar} />
+    <div className='lg:flex justify-between'>
+      <div className='h-[80vh] lg:w-[20%] '>
+        <ProfileNavigation />
       </div>
-      <div className='lg:w-[80%]'>
+      <div className='lg:w-[80%] overflow-y-auto'>
         <Routes>
           <Route path='/' element={<UserProfile />}>
           </Route>

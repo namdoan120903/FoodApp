@@ -23,7 +23,7 @@ export const Navbar = () => {
     <div className='px-5 sticky top-0 z-[100] py-[.8rem] bg-[#e91e63] lg:px-20 flex justify-between'>
 
       <div className='lg:mr-10 cursor-pointer flex items-center space-x-4'>
-        <li onClick={()=> navigate("/")} className='logo font-semibold text-gray-300 text-2xl'>Zosh Food</li>
+        <li onClick={()=> navigate("/")} className='logo font-semibold text-gray-300 text-2xl'>Hust Food</li>
       </div>
       <div className='flex items-center space-x-2 lg:space-x-10'>
         <div className=''>

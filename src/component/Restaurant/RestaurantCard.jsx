@@ -12,12 +12,16 @@ const RestaurantCard = ({item}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const {auth} = useSelector((store) => store)
+    const auth = useSelector((store) => store.auth)
     const handleAddToFavorites=()=>{
-        dispatch(addToFavorites({jwt, restaurantId: item.id}))
+        if(auth.jwt || jwt){ dispatch(addToFavorites({jwt, restaurantId: item.id}))}
+        else navigate('/account/login')
     }
     const handleNavigateToRestaurant =()=>{
-        if(item.open) navigate(`/restaurant/${item.address.city}/${item.name}/${item.id}`)
+        if(auth.jwt ||jwt){
+            if(item.open) navigate(`/restaurant/${item.address.city}/${item.name}/${item.id}`)
+        }
+        else navigate('/account/login')
     }
   return (
     <Card  className=' w-[18rem]'>

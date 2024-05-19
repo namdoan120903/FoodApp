@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CartItem from './CartItem'
 import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material'
 import AddressCard from './AddressCard'
@@ -28,39 +28,46 @@ const initialValues = {
 }
 
 const Cart = () => {
-    const {cart} = useSelector((store) => store)
-    const createOrderUsingAddress = () => {}
-
+    const cart = useSelector((store) => store.cart)
+    const auth = useSelector(store => store.auth)
+    const [nowAddress, setNowAddress] = useState()
+    const createOrderUsingAddress = (item) => {
+        setNowAddress(item)
+    }
+    console.log('dasdas',cart)
     const handleOpenAddressModel = () => setOpen(true);
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const dispatch = useDispatch()
 
-    const handleSubmit = (value) => {
+    const handleSubmit = () => {
         const data = {
             jwt: localStorage.getItem("jwt"),
             order:{
-                restaurantId: cart.cartItems[0].food?.restaurant.id,
+                restaurantId: cart.cart.item[0].food?.restaurant.id,
                 deliveryAddress:{
-                    streetAddress:value.streetAddress,
-                    stateProvince: value.stateProvince,
-                    country: value.country,
-                    city: value.city
+                    streetAddress:nowAddress.streetAddress,
+                    stateProvince: nowAddress.stateProvince,
+                    country: nowAddress.country,
+                    city: nowAddress.city
                 }
             }
         }
         dispatch(createOrder(data))
         dispatch(clearCart())
     }
+    const handleUpdateAddress = (value)=>{
+        setNowAddress(value)
+    }
     return (
         <>
             <main className='lg:flex justify-between'>
                 <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
                     {
-                        cart.cart?.item?.map((item) => <CartItem item={item} />)
+                        cart.cart?.item?.map((item) => <CartItem key={item.id} item={item} />)
                     }
-                    <Divider />
-                    <div className='billDetails px-5 text-sm'>
+                    <Divider />{
+                        cart.cart && <div className='billDetails px-5 text-sm'>
                         <p className='font-extralight py-5'>Bill Details</p>
                         <div className='space-y-3'>
                             <div className='flex justify-between text-gray-400'>
@@ -77,11 +84,41 @@ const Cart = () => {
                             </div>
                             <Divider />
                         </div>
-                        <div className='flex justify-between text-gray-400'>
-                            <p>Total Bill</p>
+                        <div className='flex justify-between text-gray-400 py-3'>
+                            <p >Total Bill</p>
                             <p>{cart.cart?.total !==0 ? (cart.cart?.total+50):0}</p>
                         </div>
                     </div>
+                    }
+                    <Divider/>
+                    {nowAddress &&<>
+                    <div className='px-5 text-sm'>
+                        <p className='py-5'>Delivery Address</p>
+                        <div className='space-y-3'>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>Street</p>
+                                <p>{nowAddress?.streetAddress}</p>
+                            </div>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>City</p>
+                                <p>{nowAddress?.city}</p>
+                            </div>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>Province</p>
+                                <p>{nowAddress?.stateProvince}</p>
+                            </div>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>Country</p>
+                                <p>{nowAddress?.country}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <Divider/>
+                    <div className='flex justify-center py-5'>
+                        <Button variant='contained' onClick={()=>handleSubmit()}>Delivery Now</Button>
+                    </div>
+                    </>
+                    }
                 </section>
                 <Divider orientation='vertical' flexItem />
                 <section className='lg:w-[70%] justify-center px-5 pb-10 lg:pb-0'>
@@ -90,7 +127,7 @@ const Cart = () => {
                     </div>
                     <div className='flex flex-wrap gap-5 justify-center'>
                         {
-                            [1, 1].map((item) => <AddressCard handleSelectAddress={createOrderUsingAddress} item={item} showButton={true} />)
+                            auth.user?.addresses.map((item) => <AddressCard key={item.id} handleSelectAddress={()=>createOrderUsingAddress(item)} item={item} showButton={true} />)
                         }
                         <Card className='flex gap-5 w-64 p-5'>
                             <AddLocationAltIcon />
@@ -109,7 +146,7 @@ const Cart = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Formik initialValues={initialValues}  onSubmit={handleSubmit}>
+                    <Formik initialValues={initialValues}  onSubmit={handleUpdateAddress}>
                         <Form>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>

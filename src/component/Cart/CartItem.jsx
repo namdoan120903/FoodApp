@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { findCart, removeCartItem, updateCartItem } from "../State/Cart/Action";
 
 const CartItem = ({ item }) => {
+  console.log("dnasjhdas", item)
   const { auth, cart } = useSelector((store) => store);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const CartItem = ({ item }) => {
         ))}
       </div>
       <div className="pt-2">
-            {item.restaurant?"":"Out of Food: Please remove this food from your cart"}
+            {item.food.restaurant?"":"Out of Food: Please remove this food from your cart"}
           </div>
     </div>
   );

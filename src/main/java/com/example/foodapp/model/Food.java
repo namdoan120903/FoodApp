@@ -1,5 +1,7 @@
 package com.example.foodapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,5 +53,8 @@ public class Food {
   @ManyToMany
   private List<IngredientsItem> ingredients = new ArrayList<>();
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Evaluate> evaluates = new ArrayList<>();
   private Date creationDate;
 }

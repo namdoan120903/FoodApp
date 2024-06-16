@@ -1,0 +1,7 @@
+# Ignore Maven build artifacts
+target/
+!target/*.jar
+
+# Ignore IDE files
+.idea/
+*.iml

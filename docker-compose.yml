@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: foodapp
+      MYSQL_USER: foodapp
+      MYSQL_PASSWORD: foodapp
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./foodapp.sql:/docker-entrypoint-initdb.d/foodapp.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foodapp
+      SPRING_DATASOURCE_USERNAME: foodapp
+      SPRING_DATASOURCE_PASSWORD: foodapp
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+volumes:
+  mysql_data:
+

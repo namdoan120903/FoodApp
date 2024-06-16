@@ -30,7 +30,7 @@ public class OrderController {
   @Autowired
   private PaymentService paymentService;
   @PostMapping("/order")
-  public ResponseEntity<PaymentResponse> creatOrder(@RequestBody OrderRequest request, @RequestHeader("Authorization") String jwt) throws Exception{
+  public ResponseEntity<PaymentResponse> createOrder(@RequestBody OrderRequest request, @RequestHeader("Authorization") String jwt) throws Exception{
     User user = userService.findUserByJwtToken(jwt);
     Order order = orderService.createOrder(request, user);
     PaymentResponse paymentResponse = paymentService.createPaymentLink(order);

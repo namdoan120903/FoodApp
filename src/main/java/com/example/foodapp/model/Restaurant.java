@@ -62,4 +62,8 @@ public class Restaurant {
   @JsonIgnore
   @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Event> events = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Evaluate> evaluates = new ArrayList<>();
 }
